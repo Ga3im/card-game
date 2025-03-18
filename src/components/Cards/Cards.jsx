@@ -40,7 +40,11 @@ function getTimerValue(startDate, endDate) {
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
-export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+
+let timerToStart = 5;
+
+export function Cards({ pairsCount = 3 }) {
+  const [previewSeconds, setPreviewSeconds] = useState(timerToStart);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -69,6 +73,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    setPreviewSeconds(timerToStart);
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -152,15 +157,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setCards(() => {
       return shuffle(generateDeck(pairsCount, 10));
     });
+  }, [status, pairsCount]);
 
-    const timerId = setTimeout(() => {
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      setPreviewSeconds(previewSeconds - 1);
+    }, 1000);
+    if (previewSeconds === 0) {
+      clearTimeout(timer);
       startGame();
-    }, previewSeconds * 1000);
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [status, pairsCount, previewSeconds]);
+    }
+  }, [previewSeconds]);
 
   // Обновляем значение таймера в интервале
   useEffect(() => {
@@ -187,7 +194,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
                 <div className={styles.timerDescription}>min</div>
                 <div>{timer.minutes.toString().padStart("2", "0")}</div>
               </div>
-              .
+              :
               <div className={styles.timerValue}>
                 <div className={styles.timerDescription}>sec</div>
                 <div>{timer.seconds.toString().padStart("2", "0")}</div>

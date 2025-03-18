@@ -18,7 +18,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       <h2 className={styles.title}>{title}</h2>
       <p className={styles.description}>Затраченное время:</p>
       <div className={styles.time}>
-        {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}
+        {gameDurationMinutes.toString().padStart("2", "0")}:{gameDurationSeconds.toString().padStart("2", "0")}
       </div>
 
       <Button onClick={onClick}>Начать сначала</Button>
