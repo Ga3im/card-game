@@ -1,10 +1,12 @@
 import { shuffle } from "lodash";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { generateDeck } from "../../utils/cards";
 import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { GameModeContext } from "../../context/gameModeContext";
+import { useNavigate } from "react-router-dom";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -41,10 +43,13 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 
-let timerToStart = 5;
-
 export function Cards({ pairsCount = 3 }) {
+  const { gameMode } = useContext(GameModeContext);
+  let timerToStart = 5; // Таймер старта
+  let attempts = gameMode ? 1 : 3; // Количество попыток
+  const nav = useNavigate();
   const [previewSeconds, setPreviewSeconds] = useState(timerToStart);
+  const [attempt, setAttempt] = useState(attempts);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -61,6 +66,10 @@ export function Cards({ pairsCount = 3 }) {
     minutes: 0,
   });
 
+  const backToMain = () => {
+    nav("/");
+  };
+
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
@@ -73,6 +82,7 @@ export function Cards({ pairsCount = 3 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    setAttempt(attempts);
     setPreviewSeconds(timerToStart);
     setGameStartDate(null);
     setGameEndDate(null);
@@ -113,7 +123,6 @@ export function Cards({ pairsCount = 3 }) {
       finishGame(STATUS_WON);
       return;
     }
-
     // Открытые карты на игровом поле
     const openCards = nextCards.filter(card => card.open);
 
@@ -124,19 +133,22 @@ export function Cards({ pairsCount = 3 }) {
       if (sameCards.length < 2) {
         return true;
       }
-
       return false;
     });
 
     const playerLost = openCardsWithoutPair.length >= 2;
 
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
-    }
+      setAttempt(attempt - 1);
+      setTimeout(() => {
+        openCardsWithoutPair[openCardsWithoutPair.length - 1].open = false;
+      }, 1000);
 
-    // ... игра продолжается
+      if (attempt === 1) {
+        finishGame(STATUS_LOST);
+        return;
+      }
+    }
   };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
@@ -163,7 +175,7 @@ export function Cards({ pairsCount = 3 }) {
     let timer = setTimeout(() => {
       setPreviewSeconds(previewSeconds - 1);
     }, 1000);
-    if (previewSeconds === 0) {
+    if (previewSeconds < 1) {
       clearTimeout(timer);
       startGame();
     }
@@ -203,7 +215,11 @@ export function Cards({ pairsCount = 3 }) {
           )}
         </div>
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        <button className={styles.backButton} onClick={backToMain}>
+          Назад
+        </button>
       </div>
+      <div className={styles.attemt}>Количество попыток: {attempt}</div>
 
       <div className={styles.cards}>
         {cards.map(card => (
