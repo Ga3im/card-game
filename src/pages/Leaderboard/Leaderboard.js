@@ -27,6 +27,10 @@ export const Leaderboard = () => {
       .catch(error => console.log(error));
   }, []);
 
+  leaders.sort(function (a, b) {
+    return a.time - b.time;
+  });
+
   return (
     <>
       <Header />

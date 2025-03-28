@@ -5,16 +5,20 @@ import { Button } from "../Button/Button";
 import deadImageUrl from "./images/dead.png";
 import celebrationImageUrl from "./images/celebration.png";
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect } from "react";
 import { GameModeContext } from "../../context/gameModeContext";
 import { postLeaderboard } from "../../api";
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, time }) {
   const nav = useNavigate();
-  const { name, gamerData} = useContext(GameModeContext);
+  const { gamerData, setGamerData } = useContext(GameModeContext);
+
+  useEffect(() => {
+    setGamerData({ ...gamerData, time: time });
+  }, []);
 
   const addToLeaderboard = () => {
-    postLeaderboard({ gamerData })
+    postLeaderboard(gamerData)
       .then(res => {
         nav("/leaderboard");
       })

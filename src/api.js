@@ -10,6 +10,7 @@ export const getLeaderboard = async () => {
 };
 
 export const postLeaderboard = async ({ name, time, achievements }) => {
+  console.log(achievements);
   return await fetch(URL_2, {
     method: "POST",
     body: JSON.stringify({

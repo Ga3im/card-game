@@ -5,9 +5,10 @@ import { useContext } from "react";
 import { Header } from "../../components/Header/Header";
 
 export function SelectLevelPage() {
-  const { gameMode, setGameMode } = useContext(GameModeContext);
+  const { gameMode, setGameMode, gamerData, setGamerData } = useContext(GameModeContext);
 
   const onGameMode = () => {
+    setGamerData({ ...gamerData, achievements: [] });
     setGameMode(!gameMode);
   };
   return (
@@ -34,7 +35,8 @@ export function SelectLevelPage() {
             </li>
           </ul>
           <div className={styles.gameMode}>
-            <p>Сложный режим</p> <input type="checkbox" name="checkbox" checked={gameMode} onClick={onGameMode} />
+            <p>Сложный режим</p>{" "}
+            <input type="checkbox" name="checkbox" defaultChecked={gameMode} onClick={onGameMode} />
           </div>
         </div>
       </div>

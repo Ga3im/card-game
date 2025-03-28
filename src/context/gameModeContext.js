@@ -5,13 +5,11 @@ export const GameModeProvider = ({ children }) => {
   const [inGame, setInGame] = useState(false);
   const [gamerData, setGamerData] = useState({
     name: "Пользователь",
-    time: time,
-    achievements: [1, 2],
+    time: 0,
+    achievements: [2],
   });
   return (
-    <GameModeContext.Provider
-      value={{ gameMode, setGameMode, inGame, setInGame, gamerData, setGamerData }}
-    >
+    <GameModeContext.Provider value={{ gameMode, setGameMode, inGame, setInGame, gamerData, setGamerData }}>
       {children}
     </GameModeContext.Provider>
   );

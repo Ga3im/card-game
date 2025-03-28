@@ -88,7 +88,21 @@ input:checked[type="checkbox"]::before {
   font-size: 15px;
   padding-top: 10px;
   text-align: center;
+  transition: all 0.3s;
 }
 .rename:hover {
   text-decoration: underline;
+  cursor: pointer;
+  transform: scale(1.04);
+}
+
+.logout {
+  text-align: center;
+  padding-top: 20px;
+  transition: all 0.3s;
+}
+.logout:hover {
+  text-decoration: underline;
+  transform: scale(1.04);
+  cursor: pointer;
 }
