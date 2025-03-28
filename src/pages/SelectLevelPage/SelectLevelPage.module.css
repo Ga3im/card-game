@@ -63,10 +63,11 @@
   color: #0080c1;
 }
 
-.gameMode{
+.gameMode {
   display: flex;
   align-items: center;
   gap: 5px;
+  font-size: 20px;
 }
 
 input[type="checkbox"] {

@@ -8,11 +8,38 @@
 
 .item {
   display: flex;
-  flex-direction: row;
   width: 500px;
-  align-items: center;
-  justify-content: space-between;
-  background: beige;
-  padding: 2px 20px;
+  background: #fff;
+  padding: 5px 10px;
   border-radius: 12px;
+  align-items: center;
+}
+
+.position {
+  width: 120px;
+}
+
+.user {
+  width: 190px;
+}
+
+.achivements {
+  width: 146px;
+  display: flex;
+  align-items: center;
+}
+
+.achivement {
+  width: 25px;
+  padding-left: 10px;
+}
+
+.superMode {
+  padding-left: 10px;
+  width: 18px;
+}
+
+.time {
+  width: 44px;
+  text-align: center;
 }

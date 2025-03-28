@@ -6,3 +6,103 @@
   background: #ffffff;
   padding: 0px 50px;
 }
+
+.logo {
+  cursor: pointer;
+  width: 40px;
+  transition: all 0.3s;
+}
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.leaderboard {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.leaderboard:hover {
+  transform: scale(1.05);
+}
+
+.user {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.user:hover {
+  transform: scale(1.05);
+  text-decoration: underline;
+}
+
+.userInfo {
+  width: 120px;
+  position: absolute;
+  right: 10px;
+  top: 45px;
+  height: 120px;
+  background-color: #b5aaaa;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.userName {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.nightTheme {
+  display: flex;
+  padding-top: 10px;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+input[type="checkbox"] {
+  position: relative;
+  width: 24px;
+  height: 13px;
+  border-radius: 100px;
+  background: #eaeef6;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background-color: #94a6be;
+  transition: 0.5s;
+}
+input:checked[type="checkbox"]::before {
+  left: 12px;
+  background: #565eef;
+}
+.rename {
+  cursor: pointer;
+  font-size: 15px;
+  padding-top: 10px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.rename:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  transform: scale(1.04);
+}
+
+.logout {
+  text-align: center;
+  padding-top: 20px;
+  transition: all 0.3s;
+}
+.logout:hover {
+  text-decoration: underline;
+  transform: scale(1.04);
+  cursor: pointer;
+}
