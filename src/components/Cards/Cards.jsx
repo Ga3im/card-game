@@ -16,6 +16,8 @@ const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 
+let diffInSecconds;
+
 function getTimerValue(startDate, endDate) {
   if (!startDate && !endDate) {
     return {
@@ -28,7 +30,7 @@ function getTimerValue(startDate, endDate) {
     endDate = new Date();
   }
 
-  const diffInSecconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
+  diffInSecconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
   const minutes = Math.floor(diffInSecconds / 60);
   const seconds = diffInSecconds % 60;
   return {
@@ -44,10 +46,11 @@ function getTimerValue(startDate, endDate) {
  */
 
 export function Cards({ pairsCount = 3 }) {
-  const { gameMode } = useContext(GameModeContext);
+  const { gameMode, setInGame } = useContext(GameModeContext);
   let timerToStart = 5; // Таймер старта
   let attempts = gameMode ? 1 : 3; // Количество попыток
   const nav = useNavigate();
+  const [superMode, setSuperMode] = useState(false);
   const [previewSeconds, setPreviewSeconds] = useState(timerToStart);
   const [attempt, setAttempt] = useState(attempts);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
@@ -65,6 +68,10 @@ export function Cards({ pairsCount = 3 }) {
     seconds: 0,
     minutes: 0,
   });
+
+  useEffect(() => {
+    setInGame(true);
+  }, []);
 
   const backToMain = () => {
     nav("/");
@@ -142,7 +149,7 @@ export function Cards({ pairsCount = 3 }) {
       setAttempt(attempt - 1);
       setTimeout(() => {
         openCardsWithoutPair[openCardsWithoutPair.length - 1].open = false;
-      }, 1000);
+      }, 500);
 
       if (attempt === 1) {
         finishGame(STATUS_LOST);
@@ -237,6 +244,7 @@ export function Cards({ pairsCount = 3 }) {
         <div className={styles.modalContainer}>
           <EndGameModal
             isWon={status === STATUS_WON}
+            time={diffInSecconds}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
